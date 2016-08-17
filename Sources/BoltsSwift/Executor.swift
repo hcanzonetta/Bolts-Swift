@@ -50,7 +50,7 @@ public enum Executor {
 
      - parameter closure: The closure to execute.
      */
-    public func execute(_ closure: () -> Void) {
+    public func execute(_ closure: @escaping () -> Void) {
         switch self {
         case .default:
             struct Static {

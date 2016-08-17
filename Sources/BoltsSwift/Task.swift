@@ -108,7 +108,7 @@ public final class Task<TResult> {
      The returned task will complete when the closure completes.
      */
     @discardableResult
-    public convenience init(_ executor: Executor = .default, closure: (Void) throws -> TResult) {
+    public convenience init(_ executor: Executor = .default, closure: @escaping (Void) throws -> TResult) {
         self.init(state: .pending())
         executor.execute {
             self.trySet(state: TaskState.fromClosure(closure))
@@ -124,7 +124,7 @@ public final class Task<TResult> {
 
      - returns: A task that will continue with the task returned by the given closure.
      */
-    public class func execute(_ executor: Executor = .default, closure: (Void) throws -> TResult) -> Task {
+    public class func execute(_ executor: Executor = .default, closure: @escaping (Void) throws -> TResult) -> Task {
         return Task(executor, closure: closure)
     }
 
@@ -137,7 +137,7 @@ public final class Task<TResult> {
 
      - returns: A task that will continue with the task returned by the given closure.
      */
-    public class func executeWithTask(_ executor: Executor = .default, closure: () throws -> Task) -> Task {
+    public class func executeWithTask(_ executor: Executor = .default, closure: @escaping () throws -> Task) -> Task {
         return emptyTask().continueWithTask(executor) { _ in
             return try closure()
         }
